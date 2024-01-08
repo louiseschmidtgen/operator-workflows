@@ -63,6 +63,7 @@ jobs:
             ' $woke_file /tmp/config.yml | tee /tmp/merged.yml
             mv /tmp/merged.yml /tmp/config.yml
           fi
+          cat /tmp/config.yml
       - name: Run inclusive naming check
         uses: canonical/inclusive-naming@main
         with:
