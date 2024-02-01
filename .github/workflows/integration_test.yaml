@@ -84,6 +84,10 @@ on:
         description: List of testing modules to run the tests in JSON format, i.e. '["foo", "bar"]'. Each element will be passed to pytest through tox as -k argument
         type: string
         default: '[""]'
+      runs-on:
+        description: Specify the runs-on of jobs.
+        type: string
+        default: ""
       pre-run-script:
         description: Path to the bash script to be run before the integration tests
         type: string
@@ -198,7 +202,7 @@ jobs:
     with:
       owner: ${{ github.repository_owner }}
       registry: ghcr.io
-      runs-on: ${{ needs.get-runner-image.outputs.runs-on }}
+      runs-on: ${{ inputs.runs-on == '' && needs.get-runner-image.outputs.runs-on || inputs.runs-on }}
       trivy-image-config: ${{ inputs.trivy-image-config }}
       working-directory: ${{ inputs.working-directory }}
       build-args: ${{ inputs.image-build-args }}
@@ -209,7 +213,7 @@ jobs:
     with:
       owner: ${{ github.repository_owner }}
       registry: ghcr.io
-      runs-on: ${{ needs.get-runner-image.outputs.runs-on }}
+      runs-on: ${{ inputs.runs-on == '' && needs.get-runner-image.outputs.runs-on || inputs.runs-on }}
       trivy-image-config: ${{ inputs.trivy-image-config }}
       working-directory: ${{ inputs.working-directory }}
   all-images:
@@ -230,7 +234,7 @@ jobs:
   build-charm:
     name: Build and push charm
     needs: get-runner-image
-    runs-on: ${{ needs.get-runner-image.outputs.runs-on }}
+    runs-on: ${{ inputs.runs-on == '' && needs.get-runner-image.outputs.runs-on || inputs.runs-on }}
     outputs:
       charm-file: ${{ env.CHARM_FILE }}
     steps:
@@ -299,7 +303,7 @@ jobs:
       provider: ${{ inputs.provider }}
       microk8s-addons: ${{ inputs.microk8s-addons }}
       registry: ghcr.io
-      runs-on: ${{ needs.get-runner-image.outputs.runs-on }}
+      runs-on: ${{ inputs.runs-on == '' && needs.get-runner-image.outputs.runs-on || inputs.runs-on }}
       self-hosted-runner: ${{ inputs.self-hosted-runner }}
       self-hosted-runner-label: ${{ inputs.self-hosted-runner-label }}
       series: ${{ inputs.series }}
