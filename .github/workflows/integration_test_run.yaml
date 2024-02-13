@@ -283,6 +283,9 @@ jobs:
         with:
           app: ${{ env.CHARM_NAME }}
           model: testing
+      - name: Dump Aproxy logs
+        if: always()
+        run: "sudo snap logs aproxy.aproxy -n=all || :"
       - name: Setting up kubeconfig ENV for Github Chaos Action
         if: ${{ inputs.chaos-enabled }}
         run: echo "KUBE_CONFIG_DATA=$(sudo microk8s config | base64 -w 0)" >> $GITHUB_ENV
