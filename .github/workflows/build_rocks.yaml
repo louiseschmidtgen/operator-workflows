@@ -66,7 +66,7 @@ jobs:
               }
               rockPaths.push(rockPath)
               core.info(`found rockcraft.yaml in ${rockPath}`)
-              const fileHash = await glob.hashFiles(path.join(rockPath, '[^.]**\n!.git'))
+              const fileHash = await glob.hashFiles(path.join(rockPath, '**') + '\n!.git')
               const rockName = (
                 await exec.getExecOutput('yq', ['.name', rockcraftFile])
               ).stdout.trim()
