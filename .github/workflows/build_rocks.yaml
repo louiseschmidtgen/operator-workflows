@@ -138,10 +138,10 @@ jobs:
           IMAGE_NAME=$(yq '.name' "${{ matrix.path }}/rockcraft.yaml")
           IMAGE_BASE=$(yq '.base' "${{ matrix.path }}/rockcraft.yaml")
           IMAGE_BUILD_BASE=$(yq '.["build-base"] // .base' "${{ matrix.path }}/rockcraft.yaml")
-          IMAGE_REF=${{ inputs.registry }}/${{ inputs.owner }}/$IMAGE_NAME:${{ hashFiles(format('{0}/{1}\n,.git', matrix.path, '**')) }}
+          IMAGE_REF=${{ inputs.registry }}/${{ inputs.owner }}/$IMAGE_NAME:${{ hashFiles(format('{0}/{1},.git', matrix.path, '**')) }}
           INODE_NUM=$(ls -id ${{ matrix.path }} | cut -f 1 -d " ")
           ROCKCRAFT_CONTAINER_NAME=rockcraft-$IMAGE_NAME-on-amd64-for-amd64-$INODE_NUM
-          echo "format for files ${{ format('{0}/{1}\n!.git', matrix.path, '**') }}"
+          echo "format for files ${{ format('{0}/{1},.git', matrix.path, '**') }}"
           echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
           echo "IMAGE_BASE=$IMAGE_BASE" >> $GITHUB_ENV
           echo "IMAGE_BUILD_BASE=$IMAGE_BUILD_BASE" >> $GITHUB_ENV
